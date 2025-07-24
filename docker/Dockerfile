@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
     ros-humble-tf2-geometry-msgs \
     ros-humble-tf-transformations \
     ros-humble-robot-localization \
-    ros-humble-teleop-twist-keyboard \
+    ros-humble-teleop-twist-* \
     ros-humble-mavros \
     ros-humble-plotjuggler-ros \
     ros-humble-rosbag2-storage-mcap \
@@ -31,11 +31,11 @@ RUN apt-get update && apt-get install -y \
     nano \
     vim \
     can-utils \
+    usbutils \
     iproute2 \
     net-tools \
     tmux \
     kmod \
-    linux-modules-extra-6.14.0-24-generic \
     tmuxinator \
     && rm -rf /var/lib/apt/lists/*
 
@@ -63,6 +63,7 @@ RUN apt-get update
 
 # Livox SDK
 WORKDIR /root
+RUN git@github.com:mkozlik/ranger_startup.git
 RUN git clone https://github.com/Livox-SDK/Livox-SDK2.git
 WORKDIR /root/Livox-SDK2
 RUN mkdir build
@@ -74,11 +75,14 @@ RUN sudo make install
 # Set up a workspace
 WORKDIR /root/scout_ws/src
 RUN git clone https://github.com/westonrobot/ugv_sdk.git
-RUN git clone https://github.com/westonrobot/ranger_ros2.git
+RUN git clone https://github.com/agilexrobotics/ranger_ros2.git
 
 # Go to workspace and build it
-WORKDIR /root/scout_ws/
+WORKDIR /root/ranger_ws/
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
 
+RUN bash /root/ranger_ws/src/ranger_ros2/ranger_bringup/scripts/setup_can2usb.bash
+
+WORKDIR /root/ranger_startup
 
 CMD ["bash"]

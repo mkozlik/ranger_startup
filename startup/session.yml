@@ -1,0 +1,14 @@
+name: ranger_startup
+root: ./
+startup_window: launch
+pre_window: |
+  # humble
+  scout_ws
+  export AGV_NAMESPACE=ranger
+  export ROS_DOMAIN_ID=9
+windows:
+  - scout_launch:
+    - bash src/ranger_ros2/ranger_bringup/scripts/bringup_can2usb.bash
+    - ros2 launch scout_base scout_mini_omni_base.launch.py
+  - teleop:
+    - ros2 run teleop_twist_keyboard teleop_twist_keyboard
