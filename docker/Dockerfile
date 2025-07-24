@@ -63,7 +63,7 @@ RUN apt-get update
 
 # Livox SDK
 WORKDIR /root
-RUN git@github.com:mkozlik/ranger_startup.git
+RUN git clone git@github.com:mkozlik/ranger_startup.git
 RUN git clone https://github.com/Livox-SDK/Livox-SDK2.git
 WORKDIR /root/Livox-SDK2
 RUN mkdir build
