@@ -9,6 +9,6 @@ pre_window: |
 windows:
   - scout_launch:
     - bash src/ranger_ros2/ranger_bringup/scripts/bringup_can2usb.bash
-    - ros2 launch scout_base scout_mini_omni_base.launch.py
+    - ros2 launch ranger_bringup ranger_mini_v3.launch.py
   - teleop:
     - ros2 run teleop_twist_keyboard teleop_twist_keyboard

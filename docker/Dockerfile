@@ -63,7 +63,7 @@ RUN apt-get update
 
 # Livox SDK
 WORKDIR /root
-RUN git clone git@github.com:mkozlik/ranger_startup.git
+RUN git clone https://github.com/mkozlik/ranger_startup.git
 RUN git clone https://github.com/Livox-SDK/Livox-SDK2.git
 WORKDIR /root/Livox-SDK2
 RUN mkdir build
@@ -73,7 +73,7 @@ RUN sudo make install
 
 
 # Set up a workspace
-WORKDIR /root/scout_ws/src
+WORKDIR /root/ranger_ws/src
 RUN git clone https://github.com/westonrobot/ugv_sdk.git
 RUN git clone https://github.com/agilexrobotics/ranger_ros2.git
 
@@ -81,8 +81,8 @@ RUN git clone https://github.com/agilexrobotics/ranger_ros2.git
 WORKDIR /root/ranger_ws/
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
 
-RUN bash /root/ranger_ws/src/ranger_ros2/ranger_bringup/scripts/setup_can2usb.bash
+#RUN bash /root/ranger_ws/src/ranger_ros2/ranger_bringup/scripts/setup_can2usb.bash
 
-WORKDIR /root/ranger_startup
+#WORKDIR /root/ranger_startup
 
 CMD ["bash"]
