@@ -13,4 +13,4 @@ windows:
   - teleop:
     - ros2 run teleop_twist_keyboard teleop_twist_keyboard
   - kinova:
-    - ros2 launch kortex_bringup gen3_lite.launch.py robot_ip:=192.168.1.10
+    - ros2 launch kortex_bringup gen3_lite.launch.py robot_ip:=192.168.1.10 launch_rviz:=false
