@@ -8,9 +8,14 @@ pre_window: |
   export ROS_DOMAIN_ID=9
 windows:
   - scout_launch:
-    - bash /root/ranger_ws/src/ranger_ros2/ranger_bringup/scripts/bringup_can2usb.bash
-    - ros2 launch ranger_bringup ranger_mini_v3.launch.py
+#    - bash /root/ranger_ws/src/ranger_ros2/ranger_bringup/scripts/bringup_can2usb.bash
+    - ros2 launch ranger_bringup ranger_mini_v3.launch.py publish_odom_tf:=true base_frame:=ranger_base_link odom_frame:=ranger_odom
   - teleop:
     - ros2 run teleop_twist_keyboard teleop_twist_keyboard
   - kinova:
-    - ros2 launch kortex_bringup gen3_lite.launch.py robot_ip:=192.168.1.10 launch_rviz:=false
+      layout: tiled
+      panes:
+        - ros2 launch kortex_bringup gen3_lite.launch.py robot_ip:=192.168.1.10 launch_rviz:=false
+  - tf_publisher:
+    - ros2 run tf2_ros static_transform_publisher 0.2 0 0 0 0 0 ranger_base_link base_link
+      
