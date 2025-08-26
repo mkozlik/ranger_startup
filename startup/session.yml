@@ -1,15 +1,15 @@
 name: ranger_startup
 root: ./
-startup_window: launch
+startup_window: sensors
 pre_window: |
   # humble
   scout_ws
   export AGV_NAMESPACE=ranger
-  export ROS_DOMAIN_ID=9
+  unset ROS_DOMAIN_ID
 windows:
   - scout_launch:
 #    - bash /root/ranger_ws/src/ranger_ros2/ranger_bringup/scripts/bringup_can2usb.bash
-    - ros2 launch ranger_bringup ranger_mini_v3.launch.py publish_odom_tf:=true base_frame:=ranger_base_link odom_frame:=ranger_odom
+    - ros2 launch ranger_bringup ranger_mini_v3.launch.py publish_odom_tf:=true base_frame:=ranger_base_link odom_frame:=odom
   - teleop:
     - ros2 run teleop_twist_keyboard teleop_twist_keyboard
   - kinova:
@@ -17,5 +17,24 @@ windows:
       panes:
         - ros2 launch kortex_bringup gen3_lite.launch.py robot_ip:=192.168.1.10 launch_rviz:=false
   - tf_publisher:
-    - ros2 run tf2_ros static_transform_publisher 0.2 0 0 0 0 0 ranger_base_link base_link
-      
+      layout: tiled
+      panes:
+        - ros2 run tf2_ros static_transform_publisher 0.268 0 0.023 0 0 0 ranger_base_link base_link
+        - ros2 run tf2_ros static_transform_publisher 0.462 0 0.042 0 0 0 ranger_base_link livox_frame
+        - ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 ranger_base_link base_footprint
+  - livox:
+      layout: tiled
+      panes:
+        - ros2 launch livox_ros_driver2 rviz_MID360_launch.py
+        - ros2 launch pointcloud_to_laserscan sample_pointcloud_to_laserscan_launch.py
+  - sensors:
+      layout: tiled
+      panes:
+        - ros2 run micro_ros_agent micro_ros_agent serial --dev /dev/ttyUSB0 -b 115200
+        - history -s "ros2 launch gas_mapping sim_gas_mapping.launch.py"
+  - slam:
+      layout: tiled
+      panes:
+        - history -s "ros2 launch slam_toolbox online_async_launch.py"
+  - bag:
+    - cd /root/bags; history -s "ros2 bag record -s mcap --all"
