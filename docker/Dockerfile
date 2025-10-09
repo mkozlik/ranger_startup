@@ -76,6 +76,8 @@ RUN sudo make install
 WORKDIR /root/ranger_ws/src
 RUN git clone https://github.com/westonrobot/ugv_sdk.git
 RUN git clone https://github.com/agilexrobotics/ranger_ros2.git
+RUN git clone https://github.com/Kinovarobotics/ros2_kortex.git
+RUN git clone --branch humble https://github.com/ros-perception/pointcloud_to_laserscan.git
 
 # Go to workspace and build it
 WORKDIR /root/ranger_ws/
